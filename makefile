@@ -1,5 +1,5 @@
 all: minish
-
+asdf
 minish: minish.o
 	gcc minish.o -o minish
 
