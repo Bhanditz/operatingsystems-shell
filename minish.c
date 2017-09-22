@@ -10,16 +10,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <sys/resource.h>
 
 // constants
 #define MAX_ARGS 16
-#define MAX_BUFFER 150
+#define MAX_BUFFER 25
 #define DELIMS " \t\r\n\a"
 
 // forward declaration
 void removePidShiftList(pid_t pid);
+bool isPidInList(int pid);
 
 // globals
 pid_t pid_list[1000];
@@ -30,8 +32,6 @@ void sig_int_handler()
 {
 	// kill current process
 	pid_t pid = getpid();
-	printf(" sig_int_handler\n");
-
 	pid_t newpid = fork();
 	
 	if (newpid == 0) {
@@ -174,12 +174,28 @@ int runShellSpecificCmd(char **args)
 	return 0;
 }
 
-// bring background process to foreground
-int makeFg(int pid)
+void makeFg(char** args)
 {
+	// convert pid string to int
+	int pid = (int)strtol(args[1], (char **)NULL, 10);
 
+	if (!isPidInList(pid)) {
+		fprintf(stderr, "PID is not in background\n");
+		return;
+	}	
 
-	return 0;
+	waitpid(pid, NULL, 0);
+	removePidShiftList(pid);
+	return;
+}
+
+bool isPidInList(int pid) {
+	for (int i = 0; i <= pid_list_index; i++) {
+		if (pid == (int) pid_list[i]) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool isBg(char** args)
@@ -190,7 +206,6 @@ bool isBg(char** args)
 			args[i] = NULL;
 			return true;
 		}
-		//printf("%d + %s\n", i, args[i]);
 		i++;
 	}
 	return false;
@@ -218,6 +233,8 @@ int main(int argc, char** argv)
 			continue;
 		}
 		else if (strcmp(args[0], "exit") == 0 || strcmp(args[0], "quit") == 0) { 
+			// remove all zombie/orphan processes
+			// cleanupProcesses();
 			printf("Exiting Shell\n");
 			exit(0);
 		}
@@ -229,6 +246,14 @@ int main(int argc, char** argv)
 			runListJobs();
 			continue;
 		} 
+		else if ((strcmp(args[0], "fg") == 0)) {
+			if (args[2] != NULL) {
+				printf("fg command takes one argument - pid number\n");
+				continue;
+			} else {
+				makeFg(args);
+			}	
+		}
 		else if (args[0] != NULL) {
 			runExec(args, isBg(args));
 		}
