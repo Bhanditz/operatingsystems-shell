@@ -22,6 +22,7 @@
 // forward declaration
 void removePidShiftList(pid_t pid);
 bool isPidInList(int pid);
+int findIndexToRemove(int pid);
 
 // globals
 pid_t pid_list[1000];
@@ -29,10 +30,10 @@ int pid_list_index = -1;
 
 void CtrlCHandler() 
 {
+	// ignore
 	printf("\n");
 	fflush(stdout);
 	return;
-	// catches interrupt and returns
 }
 
 void procFinishHandler(int sig)
@@ -40,6 +41,8 @@ void procFinishHandler(int sig)
 	int pid;
 	pid = wait(NULL);
 	if (pid != -1) {
+		// a process already finished
+		// update for listjobs()
 		int temp = findIndexToRemove(pid);
 		pid_list[temp] = -1;
 		return;
@@ -64,7 +67,7 @@ int runListJobs()
 		printf("Command %d with PID %d", i+1, pid_list[i]);
 
 		// check if already finished
-		if (pid_list[i] == -1) { 
+		if (pid_list[i] == -1) {
 			printf(" Status:FINISHED\n");
 			removePidShiftList(pid_list[i]);
 			return 0;
@@ -91,6 +94,17 @@ int runListJobs()
 	}
 
 	return 0;
+}
+
+int findIndexToRemove(int pid)
+{
+	int remove = -1;
+	for (int i = 0; i <= pid_list_index; i++) {
+		if (pid == pid_list[i]) {
+			remove = i;
+		}
+	}
+	return remove;
 }
 
 void removePidShiftList(pid_t pid)
