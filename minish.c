@@ -35,9 +35,15 @@ void CtrlCHandler()
 	// catches interrupt and returns
 }
 
-void procFinishHandler()
+void procFinishHandler(int sig)
 {
-	return;
+	int pid;
+	pid = wait(NULL);
+	if (pid != -1) {
+		int temp = findIndexToRemove(pid);
+		pid_list[temp] = -1;
+		return;
+	}
 }
 
 int runListJobs() 
@@ -47,16 +53,25 @@ int runListJobs()
 		return 0;
 	}
 
-	int status;
 	printf("List of backgrounded processes:\n");
 
 	int i = 0;
-	int toRemove[20];
+	int status;
+	int toRemove[20]; // if exit at same time
 
 	for (int i = 0; i <= pid_list_index; i++) 
 	{
-		pid_t ret = waitpid(pid_list[i], &status, WNOHANG);
 		printf("Command %d with PID %d", i+1, pid_list[i]);
+
+		// check if already finished
+		if (pid_list[i] == -1) { 
+			printf(" Status:FINISHED\n");
+			removePidShiftList(pid_list[i]);
+			return 0;
+		}
+
+		pid_t ret = waitpid(pid_list[i], &status, WNOHANG);
+		
 		if (ret == -1) {
 			printf(" Status:ERROR\n");
 		} else if (ret == 0) {
