@@ -27,20 +27,17 @@ bool isPidInList(int pid);
 pid_t pid_list[1000];
 int pid_list_index = -1;
 
-
-void sig_int_handler() 
+void CtrlCHandler() 
 {
-	// kill current process
-	pid_t pid = getpid();
-	pid_t newpid = fork();
-	
-	if (newpid == 0) {
-		// char * argv[] = {"./minish"};
-		// main(1, argv);
-		return;
-	} else {
-		exit(0);
-	}	
+	printf("\n");
+	fflush(stdout);
+	return;
+	// catches interrupt and returns
+}
+
+void procFinishHandler()
+{
+	return;
 }
 
 int runListJobs() 
@@ -53,20 +50,30 @@ int runListJobs()
 	int status;
 	printf("List of backgrounded processes:\n");
 
+	int i = 0;
+	int toRemove[20];
+
 	for (int i = 0; i <= pid_list_index; i++) 
 	{
 		pid_t ret = waitpid(pid_list[i], &status, WNOHANG);
 		printf("Command %d with PID %d", i+1, pid_list[i]);
 		if (ret == -1) {
-			printf(" Status: ERROR\n");
+			printf(" Status:ERROR\n");
 		} else if (ret == 0) {
-			printf(" Status: RUNNING\n");
+			printf(" Status:RUNNING\n");
 		} else {
 			// remove from list
-			printf(" Status: FINISHED\n");
-			removePidShiftList(pid_list[i]);
+			printf(" Status:FINISHED\n");
+			toRemove[i] = ret;
+			i++;
 		}
 	}
+
+	while (toRemove[i] != 0) {
+		removePidShiftList(toRemove[i]);
+		i++;
+	}
+
 	return 0;
 }
 
@@ -88,11 +95,21 @@ void removePidShiftList(pid_t pid)
 	pid_list_index--;
 }
 
+void cleanupProcesses() 
+{
+	int temp_pid;
+	for (int i = 0; i <= pid_list_index; i++) {
+		temp_pid = pid_list[i];
+		printf("KILL PID: %d\n", temp_pid);
+		kill(temp_pid, SIGKILL);
+	}
+}
+
 void runExec(char **args, bool background) 
 {
 	if (args[0] == NULL) return;
 
-	int pid, dupPid;
+	int pid;
 	int pstatus, cstatus;
 
 	pid = fork();
@@ -104,11 +121,10 @@ void runExec(char **args, bool background)
 			exit(-1);
 
 		case 0: // child	
-			if (execvp(args[0], args) == -1); 
-			fclose(stdin); 						// close childs stdin
-			fopen("dev/null", "r"); 			// open new empty stdin
-			perror(args[0]); 					// execvp shouldn't return unless error
-			exit(-1);
+			if (execvp(args[0], args) == -1) {
+				printf("Failed to execute command\n");
+				exit(-1);
+			}	// execvp shouldn't return unless error
 
 		default: // parent
 			if (background) {
@@ -220,11 +236,13 @@ int main(int argc, char** argv)
 	size_t buffer = 1024;
 	int i = 0;
 
-	while(1)
+	for(;;)
 	{
 		printf("shell> ");
 
-		signal(SIGINT, &sig_int_handler); // CTRL-C
+		signal(SIGCHLD, procFinishHandler);
+
+		signal(SIGINT, CtrlCHandler);
 
 		getline(&line, &buffer, stdin);
 		args = parseLine(line);
@@ -234,7 +252,7 @@ int main(int argc, char** argv)
 		}
 		else if (strcmp(args[0], "exit") == 0 || strcmp(args[0], "quit") == 0) { 
 			// remove all zombie/orphan processes
-			// cleanupProcesses();
+			cleanupProcesses();
 			printf("Exiting Shell\n");
 			exit(0);
 		}
@@ -258,6 +276,8 @@ int main(int argc, char** argv)
 			runExec(args, isBg(args));
 		}
 
+		free(line);
+		free(args);
 		line = NULL;
 		args = NULL;
 	}
