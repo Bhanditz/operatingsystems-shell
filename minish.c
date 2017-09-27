@@ -69,7 +69,8 @@ int runListJobs()
 		}
 	}
 
-	while (toRemove[i] != 0) {
+	while (toRemove[i] != 0) 
+	{
 		removePidShiftList(toRemove[i]);
 		i++;
 	}
