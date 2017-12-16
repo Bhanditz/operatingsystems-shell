@@ -22,7 +22,6 @@ Execute commands in either foreground or background mode. In foreground mode, th
 		minish> Command2 <br />
 		[Output of Command1 and Command2 may interleave here in arbitrary order. Your shell waits for Command 2 to finish.] <br />
 		minish> <br />
-		<br />
 Maintain multiple processes running in background mode simultaneously. For example: <br />
 		minish> Command1 & <br />
 		minish> Command2 & <br />
@@ -53,15 +52,15 @@ The cd command must actually change the directory of your shell and the pwd comm
 
 ### Do Nots:
  <br />
-DO NOT use any special wrapper libraries or classes to borrow the basic functionality required in this assignment. If in doubt, ask the instructor first BEFORE doing so.
-DO NOT use the system(...) syscall to execute the programs in your shell directly.
+DO NOT use any special wrapper libraries or classes to borrow the basic functionality required in this assignment. If in doubt, ask the instructor first BEFORE doing so.  <br />
+DO NOT use the system(...) syscall to execute the programs in your shell directly.  <br />
 DO NOT write five or six different programs, one for each feature. Write one single program that includes all the above features.
  <br />
 ### Hints:
  <br />
 Build and test one functionality at a time.
 Make backup copies of partially working versions of your code. This way, if you irreparably screw up your code, then you can at least roll back to your last backup copy.
-First design your data structures and code-structure before you begin coding each feature. Anticipate specific problems you will face.
+First design your data structures and code-structure before you begin coding each feature. Anticipate specific problems you will face.  <br />
  <br />
 Check out man page for the following:  <br />
 fork()  <br />
@@ -79,19 +78,20 @@ The final score = part1 + part2.
  <br />
 ### Part1 Program Demo
 
-5 - README, Makefile, Compilation without errors
-10 - Executing a command with no arguments in foreground
-10 - Executing a command with multiple arguments in foreground
-10 - Executing a single command in background
-10 - Executing multiple commands in background simultaneously
-10 - Printing an accurate list of background processes with listjobs command.
-15 - Bringing a background process to foreground using the fg command.
-10 - Terminating a foreground process using Ctrl+C without killing the shell, and killing minish using exit.
-10 - Implementation of cd and pwd command
+5 - README, Makefile, Compilation without errors  <br />
+10 - Executing a command with no arguments in foreground  <br />
+10 - Executing a command with multiple arguments in foreground  <br />
+10 - Executing a single command in background  <br />
+10 - Executing multiple commands in background simultaneously  <br />
+10 - Printing an accurate list of background processes with listjobs command.  <br />
+15 - Bringing a background process to foreground using the fg command.  <br />
+10 - Terminating a foreground process using Ctrl+C without killing the shell, and killing minish using exit.  <br />
+10 - Implementation of cd and pwd command  <br />
 10 - Error Handling: Most important part here is to make sure that you check and handle the errors returned by ALL systems calls used in your program. Also check for other common error conditions in your program. But don't go overboard with error checking. We will not try to intentionally break your code with bad input that may be irrelevant to the assignment's goals.
+ <br />
 Total score of part1 = 100
 
 ### Part2 Answering Questions
 
-TAs will ask the questions about this project/your code. You need to fully understand this project and your implementation.
+TAs will ask the questions about this project/your code. You need to fully understand this project and your implementation.  <br />
 Total score of part2 = 100
