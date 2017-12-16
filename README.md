@@ -87,9 +87,9 @@ The final score = part1 + part2.
 10 - Implementation of cd and pwd command  <br />
 10 - Error Handling: Most important part here is to make sure that you check and handle the errors returned by ALL systems calls used in your program. Also check for other common error conditions in your program. But don't go overboard with error checking. We will not try to intentionally break your code with bad input that may be irrelevant to the assignment's goals.
  <br />
-Total score of part1 = 100
+ <br /> Total score of part1 = 100
 
 ### Part2 Answering Questions
 
 TAs will ask the questions about this project/your code. You need to fully understand this project and your implementation.  <br />
-Total score of part2 = 100
+ <br /> Total score of part2 = 100
