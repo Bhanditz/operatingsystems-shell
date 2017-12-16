@@ -29,7 +29,6 @@ Maintain multiple processes running in background mode simultaneously. For examp
 		minish> <br />
 		[Output of Command1, Command2, and Command3 may interleave here in arbitrary order. Shell does not wait for any of the commands to finish.] <br />
 
-		<br />
 List all currently running background jobs using "listjobs" command.<br />
 		minish> Command1 & <br />
 		minish> Command2 & <br />
@@ -51,13 +50,12 @@ The exit command should terminate your shell. Take care to avoid orphan processe
 The cd command must actually change the directory of your shell and the pwd command must return the current directory of your shell. Note that normal fork-exec mechanism won't work here. Why?  <br />
 
 ### Do Nots:
- <br />
+
 DO NOT use any special wrapper libraries or classes to borrow the basic functionality required in this assignment. If in doubt, ask the instructor first BEFORE doing so.  <br />
 DO NOT use the system(...) syscall to execute the programs in your shell directly.  <br />
-DO NOT write five or six different programs, one for each feature. Write one single program that includes all the above features.
- <br />
+DO NOT write five or six different programs, one for each feature. Write one single program that includes all the above features. <br />
 ### Hints:
- <br />
+
 Build and test one functionality at a time.
 Make backup copies of partially working versions of your code. This way, if you irreparably screw up your code, then you can at least roll back to your last backup copy.
 First design your data structures and code-structure before you begin coding each feature. Anticipate specific problems you will face.  <br />
