@@ -1,6 +1,6 @@
 # CS350 Create Your Own Shell
 
-Description
+## Description
 
 This assignment helps you learn about processes and basic process management in a shell. You are asked to write a simple shell program called minish. This shell must work as follows. You start the shell by running minish program. This will give a prompt of your shell as follows:
 
@@ -50,11 +50,13 @@ Bring a background process to foreground using the fg command with process ID as
 Terminate a process by pressing [Ctrl-C]. Your shell must not get killed; only the process running inside your shell must terminate.
 The exit command should terminate your shell. Take care to avoid orphan processes.
 The cd command must actually change the directory of your shell and the pwd command must return the current directory of your shell. Note that normal fork-exec mechanism won't work here. Why?
+
 Do Nots:
 
 DO NOT use any special wrapper libraries or classes to borrow the basic functionality required in this assignment. If in doubt, ask the instructor first BEFORE doing so.
 DO NOT use the system(...) syscall to execute the programs in your shell directly.
 DO NOT write five or six different programs, one for each feature. Write one single program that includes all the above features.
+
 Hints:
 
 Build and test one functionality at a time.
@@ -67,13 +69,14 @@ waitpid()
 kill()
 chdir()
 getcwd()
-Grading Guidelines
+
+## Grading Guidelines
 
 This is how we will grade your assignment during the demo. So please prioritize your work accordingly.
 
 The final score = part1 + part2.
 
-Part1 Program Demo
+### Part1 Program Demo
 
 5 - README, Makefile, Compilation without errors
 10 - Executing a command with no arguments in foreground
@@ -87,7 +90,7 @@ Part1 Program Demo
 10 - Error Handling: Most important part here is to make sure that you check and handle the errors returned by ALL systems calls used in your program. Also check for other common error conditions in your program. But don't go overboard with error checking. We will not try to intentionally break your code with bad input that may be irrelevant to the assignment's goals.
 Total score of part1 = 100
 
-Part2 Answering Questions
+### Part2 Answering Questions
 
 TAs will ask the questions about this project/your code. You need to fully understand this project and your implementation.
 Total score of part2 = 100
