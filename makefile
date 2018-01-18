@@ -7,4 +7,4 @@ minish.o: minish.c
 	gcc -c -g minish.c -o minish.o
 
 clean:
-	-rm minish.o minish.c
+	-rm minish.o 
